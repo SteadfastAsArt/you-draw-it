@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    font-family: Avenir, helvetica, arial, comic sans, sans-serif;
+}
+
+svg {
+    cursor: pointer;
+    display: block;
+}
+
+.self {
+    fill: none;
+    stroke: #4281B5;
+    stroke-width:3;
+
+}
+
+.olive-bg {
+    background-color: #ffffff;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 100px;
+}
+
+.grid line {
+    stroke: #575757;
+    stroke-opacity: 0.3;
+    shape-rendering: crispEdges;
+    /* stroke-dasharray: 5, 5; */
+}
+
+.grid path {
+    stroke-width: 0;
+
+}

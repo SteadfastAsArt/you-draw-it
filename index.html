@@ -1,142 +1,220 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <style type="text/css">
-    * {
-      margin: 0;
-      padding: 0;
-      border: 0;
-    }
-
-    body {
-       font-family: Avenir,helvetica,arial,comic sans,sans-serif;
-    }
-
-    svg {
-      cursor: pointer;
-      display: block;
-    }
-
-    circle {
-      fill: #001f3f;
-    }
-
-    path {
-      fill: none;
-      stroke: #001f3f;
-      stroke-width: 2;
-    }
-
-    .olive-bg {
-      background-color: #3D9970;
-    }
-
-    .center {
-      margin: 0 auto;
-    }
-
-    header {
-      padding: 2rem 0;
-    }
-
-    main {
-      padding: 2rem 0;
-      width: 100%;
-    }
-
-    h1, h2 {
-      text-align: center;
-      color: #001f3f;
-    }
-
-    h2 {
-      font-weight: 100;
-    }
-  </style>
+    <meta charset="utf-8">
 </head>
 <body>
-  <header class="olive-bg">
+<div class="olive-bg">
     <svg class="center"></svg>
-  </header>
-  <main>
-    <h1>you draw it</h1>
-    <h2>simple line drawing with D3</h2>
-    <h2>click and drag to reshape the graph</h2>
-  </main>
+    <button type="button" class="btn btn-primary" id="reset">Reset</button>
+    <button type="button" class="btn btn-primary" id="submit">Submit</button>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
-  <script type="text/javascript">
-    var width = 800;
-    var height = 300;
-    var radius = 4;
-    var padding = radius * 6;
-    var numCircles = 20;
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/d3-axis.v1.min.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="demo.css" type="text/css">
+
+<script type="text/javascript">
+/* 301, Garage_Area */
+var x_value = [-5.68e-14, 4.976588629, 9.953177258, 14.92976589, 19.90635452, 24.88294314, 29.85953177, 34.8361204, 39.81270903, 44.78929766, 49.76588629, 54.74247492, 59.71906355, 64.69565217, 69.6722408, 74.64882943, 79.62541806, 84.60200669, 89.57859532, 94.55518395, 99.53177258, 104.50836120000001, 109.4849498, 114.4615385, 119.43812709999999, 124.41471570000002, 129.3913044, 134.36789299999998, 139.3444816, 144.32107019999998, 149.29765890000002, 154.2742475, 159.25083610000001, 164.22742480000002, 169.2040134, 174.180602, 179.1571906, 184.13377930000001, 189.1103679, 194.08695649999999, 199.0635452, 204.04013380000004, 209.01672240000002, 213.99331099999998, 218.96989969999998, 223.9464883, 228.92307689999998, 233.8996656, 238.87625419999998, 243.85284280000002, 248.82943140000003, 253.80602009999998, 258.78260869999997, 263.75919730000004, 268.73578599999996, 273.71237460000003, 278.6889632, 283.6655518, 288.6421405, 293.6187291, 298.59531769999995, 303.5719064, 308.548495, 313.5250836, 318.50167220000003, 323.47826089999995, 328.4548495, 333.4314381, 338.4080268, 343.3846154, 348.361204, 353.33779260000006, 358.31438130000004, 363.29096989999994, 368.2675585, 373.2441472, 378.2207358, 383.1973244, 388.17391299999997, 393.1505017, 398.1270903, 403.1036789, 408.08026760000007, 413.05685619999997, 418.03344480000004, 423.0100334, 427.9866221, 432.9632107, 437.9397993, 442.916388, 447.8929766, 452.86956519999995, 457.8461539, 462.8227425, 467.7993311000001, 472.7759197, 477.75250839999995, 482.72909699999997, 487.70568560000004, 492.68227429999996, 497.6588629, 502.6354515, 507.61204010000006, 512.5886287999999, 517.5652173999999, 522.541806, 527.5183946999999, 532.4949833000001, 537.4715719, 542.4481605000001, 547.4247492000001, 552.4013378, 557.3779264, 562.3545151000001, 567.3311037000001, 572.3076923, 577.2842809, 582.2608696000001, 587.2374582, 592.2140467999999, 597.1906355000001, 602.1672241, 607.1438127, 612.1204012999999, 617.09699, 622.0735786, 627.0501672, 632.0267558999999, 637.0033445, 641.9799331, 646.9565217, 651.9331103999999, 656.909699, 661.8862876000001, 666.8628762999999, 671.8394649, 676.8160535000001, 681.7926421, 686.7692308, 691.7458194, 696.722408, 701.6989967000001, 706.6755853, 711.6521739, 716.6287625, 721.6053512, 726.5819397999999, 731.5585284, 736.5351171, 741.5117057, 746.4882943, 751.4648829, 756.4414716, 761.4180602000001, 766.3946488, 771.3712375, 776.3478261, 781.3244147, 786.3010032999999, 791.277592, 796.2541806, 801.2307692, 806.2073579, 811.1839464999999, 816.1605351, 821.1371238, 826.1137123999999, 831.090301, 836.0668896000001, 841.0434783, 846.0200669, 850.9966555, 855.9732442, 860.9498328, 865.9264214, 870.90301, 875.8795987, 880.8561873, 885.8327759, 890.8093646, 895.7859532, 900.7625418, 905.7391303999999, 910.7157191, 915.6923077, 920.6688962999999, 925.645485, 930.6220735999999, 935.5986622000001, 940.5752507999999, 945.5518394999999, 950.5284280999999, 955.5050167000002, 960.4816053999999, 965.4581939999999, 970.4347826, 975.4113712000001, 980.3879598999999, 985.3645485, 990.3411371, 995.3177258, 1000.2943140000001, 1005.270903, 1010.247492, 1015.2240800000001, 1020.200669, 1025.177258, 1030.1538460000002, 1035.130435, 1040.107023, 1045.083612, 1050.060201, 1055.036789, 1060.0133779999999, 1064.989967, 1069.966555, 1074.9431439999998, 1079.919732, 1084.8963210000002, 1089.87291, 1094.849498, 1099.826087, 1104.802676, 1109.779264, 1114.755853, 1119.732442, 1124.70903, 1129.6856189999999, 1134.662207, 1139.6387960000002, 1144.615385, 1149.591973, 1154.568562, 1159.545151, 1164.521739, 1169.498328, 1174.4749160000001, 1179.451505, 1184.4280939999999, 1189.404682, 1194.3812710000002, 1199.35786, 1204.334448, 1209.311037, 1214.287625, 1219.264214, 1224.240803, 1229.217391, 1234.19398, 1239.170569, 1244.147157, 1249.123746, 1254.100334, 1259.076923, 1264.053512, 1269.0301, 1274.006689, 1278.983278, 1283.959866, 1288.936455, 1293.913044, 1298.8896320000001, 1303.866221, 1308.842809, 1313.819398, 1318.795987, 1323.772575, 1328.749164, 1333.725753, 1338.702341, 1343.67893, 1348.655518, 1353.6321070000001, 1358.608696, 1363.585284, 1368.561873, 1373.538462, 1378.51505, 1383.491639, 1388.4682269999998, 1393.444816, 1398.421405, 1403.397993, 1408.374582, 1413.351171, 1418.327759, 1423.3043480000001, 1428.280937, 1433.257525, 1438.234114, 1443.2107019999999, 1448.187291, 1453.16388, 1458.140468, 1463.117057, 1468.093646, 1473.070234, 1478.0468230000001, 1483.023411, 1488.0],
+y_value = [210038.15, 210647.1756, 211255.0629, 211861.4573, 212466.0045, 213068.3501, 213668.1396, 214265.0186, 214858.6328, 215448.6277, 216034.6488, 216616.3418, 217193.3276, 217765.1035, 218331.1287, 218890.8621, 219443.7626, 219989.2893, 220526.901, 221056.0568, 221576.2156, 222086.8364, 222587.3781, 223077.2534, 223555.5837, 224021.3778, 224473.6443, 224911.3918, 225333.6288, 225739.36399999997, 226127.6058, 226497.363, 226847.64399999997, 227177.4574, 227485.9172, 227772.9733, 228038.9746, 228284.2722, 228509.2174, 228714.1615, 228899.4556, 229065.4511, 229212.4992, 229340.9511, 229451.158, 229543.4069, 229617.3298, 229672.1762, 229707.1907, 229721.6179, 229714.7025, 229685.6892, 229633.8225, 229558.3471, 229458.5077, 229333.5488, 229182.7823, 229006.4154, 228805.2925, 228580.272, 228332.212, 228061.9708, 227770.4066, 227458.3777, 227126.7423, 226776.3586, 226408.0849, 226022.9016, 225623.9824, 225216.3982, 224805.2824, 224395.7685, 223992.9898, 223602.0799, 223228.1721, 222876.3998, 222551.8966, 222259.7958, 222005.1089, 221789.7822, 221612.545, 221471.9744, 221366.6474, 221295.141, 221256.0323, 221247.8982, 221269.3159, 221318.8623, 221395.1145, 221496.6161, 221620.6708, 221763.0019, 221919.2305, 222084.9775, 222255.8639, 222427.5107, 222595.5388, 222755.5692, 222903.2229, 223034.1209, 223143.9157, 223230.1603, 223293.3528, 223334.2447, 223353.5875, 223352.1329, 223330.6322, 223289.8371, 223230.49899999998, 223153.3695, 223059.2002, 222948.7605, 222824.8222, 222693.9475, 222563.1209, 222439.3268, 222329.5497, 222240.7742, 222179.9846, 222154.1654, 222170.3013, 222235.3765, 222356.3692, 222538.5924, 222783.4864, 223091.9419, 223464.85, 223903.1014, 224407.5869, 224979.1975, 225618.8239, 226327.357, 227105.6877, 227954.7043, 228872.8874, 229851.7905, 230881.7295, 231953.0202, 233055.9785, 234180.9202, 235318.16100000002, 236458.0169, 237590.8037, 238706.8371, 239796.4331, 240851.3968, 241868.8653, 242847.1679, 243784.6342, 244679.5938, 245530.3761, 246335.3107, 247092.7272, 247800.955, 248458.3237, 249063.1628, 249614.6103, 250115.4186, 250569.3497, 250980.1656, 251351.6282, 251687.4996, 251991.5419, 252267.5169, 252519.1868, 252750.3136, 252964.6592, 253165.9558, 253357.7688, 253543.6053, 253726.9725, 253911.3775, 254100.3276, 254297.3298, 254505.8915, 254729.5196, 254971.7215, 255236.0042, 255525.3495, 255839.0359, 256174.7495, 256530.1704, 256902.9788, 257290.8546, 257691.478, 258102.52899999998, 258521.6876, 258946.6341, 259375.0483, 259804.6946, 260234.0923, 260662.1598, 261087.819, 261509.9917, 261927.5998, 262339.5654, 262744.8102, 263142.2562, 263530.8253, 263909.4394, 264276.9855, 264631.9445, 264972.5352, 265296.9723, 265603.4704, 265890.2439, 266155.5074, 266397.4756, 266614.3629, 266804.3839, 266965.7532, 267096.6985, 267195.6491, 267261.1928, 267291.9217, 267286.4278, 267243.3032, 267161.14, 267038.5302, 266874.0658, 266666.3388, 266413.9414, 266115.5377, 265771.3137, 265382.9055, 264952.007, 264480.3122, 263969.5148, 263421.3087, 262837.3879, 262219.4462, 261569.1774, 260888.2754, 260178.43399999998, 259441.34100000001, 258678.678, 257892.1259, 257083.3657, 256254.0786, 255405.9454, 254540.6474, 253659.8654, 252765.2805, 251858.5738, 250941.4191, 250015.15600000002, 249080.6544, 248138.7492, 247190.275, 246236.0666, 245276.9588, 244313.7864, 243347.3841, 242378.5867, 241408.2288, 240437.141, 239465.8021, 238494.0892, 237521.8204, 236548.8139, 235574.8877, 234599.8601, 233623.549, 232645.7725, 231666.3489, 230685.0962, 229701.8334, 228716.5183, 227729.3998, 226740.7636, 225750.8953, 224760.0806, 223768.6051, 222776.7545, 221784.8143, 220793.0702, 219801.8079, 218811.313, 217821.8397, 216833.5623, 215846.6419, 214861.2397, 213877.5169, 212895.6347, 211915.7543, 210938.0369, 209962.6437, 208989.736, 208019.4749, 207051.945, 206086.9855, 205124.3864, 204163.9378, 203205.4298, 202248.6523, 201293.3955, 200339.4494, 199386.604, 198434.6494, 197483.3756],
+x_lable = [0, 249, 423, 523, 597, 1070, 1488],
+y_lable = [190000, 220000, 250000, 280000];
+
+
+function self_plot(x_value, y_value, x_lable, y_lable){
+    var numCircles = x_value.length;  // todo
+
+    var plot_flag = -1;
+    var last_i = 0;
+    var _xmin = d3.min(x_value), _ymin = d3.min(y_value), _xmax = d3.max(x_value), _ymax = d3.max(y_value);
+    // console.log(_ymin)
+
+    var margin = {top: 30, right: 30, bottom: 30, left: 50},
+        width = 800 - margin.left - margin.right,
+        height = 700 - margin.top - margin.bottom;
+    
+    var rate_plot2real = (_ymax - _ymin) / height;
 
     var svg = d3.select('svg')
-      // .append('svg')
-      .attr('width', width)
-      .attr('height', height);
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
 
-    // maps point positions to pixel positions along the x axis
-    var spread = d3.scale.ordinal()
-      .domain(d3.range(numCircles))
-      .rangeBands([0, width], 0, 1);
+    var baseLayer = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var plotLayer = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // function for generating svg path
-    var line = d3.svg.line()
-      .x(function(d) { return d.x; })
-      .y(function(d) { return d.y; })
-      .interpolate("cardinal");
+    var line = d3.line()
+        .x(function (d) {
+            return d.x;
+        })
+        .y(function (d) {
+            return d.y;
+        })
+        .curve(d3.curveCatmullRom);
+
+    // set the ranges
+    var x = d3.scaleLinear().domain([_xmin, _xmax]).range([0, width]);
+    var y = d3.scaleLinear().domain([y_lable[0], y_lable.slice(-1)[0]]).range([height, 0]);
+
+    // gridlines in x axis function
+    function make_x_gridlines() {
+        return d3.axisBottom(x)
+            // .ticks(5)
+            ;
+    }
+
+    // gridlines in y axis function
+    function make_y_gridlines() {
+        return d3.axisLeft(y)
+            // .ticks(10)
+            ;
+    }
+
+    // -------------------------------------------------- //
+
+    // add the X Axis
+    baseLayer.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x)
+                .tickValues(x_lable)
+             );
+        //.tickValues([140])
+
+    // add the Y Axis
+    baseLayer.append("g")
+        .call(d3.axisLeft(y)
+                .tickValues(y_lable)
+                .tickFormat(function(d){
+                  d = d / 1000 + " K";
+                  return d;
+                })
+             );
+
+    // add the X gridlines
+    baseLayer.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(make_x_gridlines()
+            .tickSize(-height)
+            .tickFormat("")
+            .tickValues(x_lable)
+        );
+
+    // add the Y gridlines
+    baseLayer.append("g")
+        .attr("class", "grid")
+        .call(make_y_gridlines()
+            .tickSize(-width)
+            .tickFormat("")
+            .tickValues(y_lable)
+        );
+    // -------------------------------------------------- //
+
+
+    // maps point positions to pixel positions along the x axis
+    var spread = d3.scaleBand()
+        .domain(d3.range(numCircles))
+        .range([0, width]);
+        // .paddingOuter(0.1);
+
+    // todo
+    var equal_slice = [];
+    for (let i = 0; i < numCircles; i++) equal_slice.push(spread(i));
+    equal_slice.push(spread(2)-spread(1)+spread(numCircles-1));
+    // console.log(equal_slice);
 
     // create a fixed number of points for the graph
-    var points = d3.range(numCircles).map(function(d) {
-      return {
-        x: spread(d),
-        y: Math.floor(Math.random() * (height - 2*padding) + padding)
-      }
+    var points = d3.range(numCircles).map(function (d) {
+        return {
+            x: spread(d), //+ margin.left,
+            y: height
+        }
     });
+    points.push({x:equal_slice.slice(-1)[0], y:height});
+    // console.log(points);
 
-    var circles = svg
-      .append('g')
-      .selectAll('circle')
-      .data(points)
-      .enter()
-        .append('circle')
-        .attr({
-          r: radius,
-          cx: function(d) { return d.x },
-          cy: function(d) { return d.y }
-        });
-
-    function drawPath() {
-      var path = svg.selectAll('path').data([points]);
-      path.enter().append('path');
-      path.attr('d', line);
-      path.exit().remove();
+    function drawPath(flg) {
+        // console.log('!!!');
+        var path = plotLayer.selectAll('path')
+            .data([points.slice(0, flg + 1)]);
+        path.enter().append('path');
+        path.attr('d', line).attr('class', 'self');
+        path.exit().remove();
     }
 
     // draw the initial path through the points
     drawPath();
 
-    var drag = d3.behavior.drag().on('drag', dragHandler);
+    var drag = d3.drag().on('drag', dragHandler);
     svg.call(drag);
 
     function dragHandler() {
-      var m = d3.mouse(this);
-      var x = m[0];
-      var y = Math.max(padding, Math.min(m[1], height - padding))
+        var m = d3.mouse(this);
+        var x = Math.max(0, Math.min(m[0] - margin.left, width));
+        var y = Math.max(0, Math.min(m[1] - margin.top, height));
 
-      var range = spread.range();
-      var space = spread.rangeBand() / 2;
-      for (var i = 0; x > (range[i] + space); i++) {}
+        // console.log(m);
 
-      if (i >= circles[0].length) return;
+        var space = (equal_slice[2] - equal_slice[1]) / 2;
 
-      d3.select(circles[0][i]).attr('cy', y);
-      points[i].y = y;
-      drawPath();
+        for (var i = 0; x > (equal_slice[i] + space); i++) {}
+        points[i].y = y;
+
+        if (i > plot_flag) plot_flag = i;
+        if (Math.abs(last_i - i) > 1) {
+            let _interval = Math.abs(last_i - i);
+            let incre_y = Math.abs(points[last_i].y - points[i].y) / _interval;
+            let rate = points[last_i].y - points[i].y < 0 ? 1 : -1;
+            let rate2 = last_i - i < 0 ? 1 : -1;
+            for (let j = 1; j < _interval; j++) {
+                points[last_i + rate2 * j].y = points[last_i + rate2 * (j - 1)].y + incre_y * rate;
+            }
+        }
+
+        last_i = i;
+
+        drawPath(i < plot_flag ? plot_flag : i);
     }
-  </script>
+    
+    $('#submit').click(function () {
+      // if(y_value.length > )
+        var _sum = 0.0;
+        for(let i = 0; i < y_value.length; i++) {
+          _sum += (_ymin+(height-points[i].y)*rate_plot2real - y_value[i]) * (_ymin+(height-points[i].y)*rate_plot2real - y_value[i]);
+        }
+        var _rmse = Math.sqrt(_sum / y_value.length);
+        console.log('RMSE:', _rmse);
+    });
+
+    $('#reset').click(function () {
+        d3.select('.self').remove();
+        points = d3.range(numCircles).map(function (d) {
+        return {
+            x: spread(d), //+ margin.left,
+            y: height
+        }
+    });
+        plot_flag = -1;
+        last_i = 0;
+    });
+}
+
+
+
+self_plot(x_value, y_value, x_lable, y_lable);
+
+</script>
+
+<script type="text/javascript">
+
+</script>
+
 </body>
 </html>
